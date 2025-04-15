@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 350px;
+            max-width: 100%;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            color: #666;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab.active {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .login-btn:active {
+            background-color: #0056b3;
+        }
+
+        .switch LOGIN {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .switch LOGIN p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .social-login {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .social-login img {
+            width: 30px;
+            height: 30px;
+            margin: 0 10px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .social-login img:hover {
+            opacity: 0.8;
+        }
+
+        .verification-input-group {
+            position: relative;
+            display: flex;
+        }
+
+        .verification-input-group input {
+            flex: 1;
+            padding-right: 80px;
+            height: 38px;
+        }
+
+        .verification-btn {
+            position: absolute;
+            right: 3px;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 34px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.3rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .verification-btn:active {
+            background-color: #0056b3;
+        }
+
+        .social-login {
+            margin-top: 1rem;
+        }
+
+        .switch-tab {
+            cursor: pointer;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .switch-tab:active {
+            color: #0056b3;
+        }
+
+        .help {
+            margin-top: 1rem;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .social-login span {
+            display: block;
+            margin-bottom: 0px;
+            position: relative;
+            text-align: center;
+        }
+
+        .social-login span::before,
+        .social-login span::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: calc(50% - 55px);
+            height: 1px;
+            background-color: #ccc;
+            transform: translateY(-50%);
+        }
+
+        .social-login span::before {
+            left: 0;
+        }
+
+        .social-login span::after {
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>欢迎登录</h1>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchLoginType('password')">密码登录</div>
+            <div class="tab" onclick="switchLoginType('phone')">手机号登录</div>
+        </div>
+
+        <form id="loginForm">
+            <div id="passwordLogin" class="login-form">
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" placeholder="请输入用户名" id="username">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" placeholder="请输入密码" id="password">
+                </div>
+                <button type="submit" class="login-btn">登录/注册</button>
+            </div>
+
+            <div id="phoneLogin" class="login-form" style="display: none;">
+                <div class="form-group">
+                    <label>手机号</label>
+                    <input type="tel" placeholder="请输入手机号" id="phone">
+                </div>
+                <div class="form-group">
+                    <label>验证码</label>
+                    <div class="verification-input-group">
+                        <input type="text" placeholder="请输入验证码" id="verificationCode">
+                        <button type="button" class="verification-btn" onclick="sendVerificationCode()">获取验证码</button>
+                    </div>
+                </div>
+                <button type="submit" class="login-btn">登录/注册</button>
+            </div>
+        </form>
+
+        <div class="help" style="text-align: right;">
+            <a href="#" class="switch-tab">忘记密码？</a>
+        </div>
+
+        <div class="social-login">
+            <span>其他登录方式</span>
+            <br>
+            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" style="width: 30px; height: 30px; margin: 0 10px; cursor: pointer; border-radius: 50%;">
+        </div>
+
+    </div>
+
+    <script>
+        function switchLoginType(type) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`#${type}Login`).classList.remove('display-none');
+            document.querySelector(`#${type}Login`).style.display = 'block';
+            if (type !== 'phone') {
+                document.getElementById('phoneLogin').style.display = 'none';
+                document.querySelector('.tab').classList.add('active');
+            } else {
+                document.getElementById('passwordLogin').style.display = 'none';
+                document.querySelector('.tab').nextElementSibling.classList.add('active');
+            }
+        }
+
+        function sendVerificationCode() {
+            const phone = document.getElementById('phone').value;
+            if (!/^\d{11}$/.test(phone)) {
+                alert('请输入正确的手机号');
+                return;
+            }
+
+            let countdown = 60;
+            const btn = document.querySelector('.verification-btn');
+            btn.disabled = true;
+            btn.style.backgroundColor = '#ccc';
+            btn.style.cursor = 'not-allowed';
+
+            const interval = setInterval(() => {
+                countdown--;
+                btn.textContent = countdown + '秒后重发';
+                if (countdown <= 0) {
+                    clearInterval(interval);
+                    btn.disabled = false;
+                    btn.style.backgroundColor = '#007bff';
+                    btn.style.cursor = 'pointer';
+                    btn.textContent = '获取验证码';
+                }
+            }, 1000);
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const currentLoginType = document.querySelector('.tab.active').textContent;
+            if (currentLoginType === '密码登录') {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                alert('用户名：' + username + '\n密码：' + password);
+            } else {
+                const phone = document.getElementById('phone').value;
+                const verificationCode = document.getElementById('verificationCode').value;
+                alert('手机号：' + phone + '\n验证码：' + verificationCode);
+            }
+        });
+    </script>
+</body>
+</html>
